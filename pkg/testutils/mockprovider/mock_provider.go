@@ -3,6 +3,10 @@ package mockprovider
 import (
 	"time"
 
+	"github.com/weaveworks/eksctl/pkg/awsapi"
+
+	"github.com/weaveworks/eksctl/pkg/eks/mocksv2"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/autoscaling/autoscalingiface"
@@ -35,6 +39,8 @@ var ProviderConfig = &api.ProviderConfig{
 	WaitTimeout: 1200000000000,
 }
 
+var _ api.ClusterProvider = &MockProvider{}
+
 type MockAWSClient struct {
 	*client.Client
 }
@@ -65,6 +71,9 @@ type MockProvider struct {
 	cloudtrail     *mocks.CloudTrailAPI
 	cloudwatchlogs *mocks.CloudWatchLogsAPI
 	configProvider *mocks.ConfigProvider
+
+	stsV2            *mocksv2.STS
+	cloudformationV2 *mocksv2.CloudFormation
 }
 
 // NewMockProvider returns a new MockProvider
@@ -84,7 +93,26 @@ func NewMockProvider() *MockProvider {
 		cloudtrail:     &mocks.CloudTrailAPI{},
 		cloudwatchlogs: &mocks.CloudWatchLogsAPI{},
 		configProvider: &mocks.ConfigProvider{},
+
+		stsV2:            &mocksv2.STS{},
+		cloudformationV2: &mocksv2.CloudFormation{},
 	}
+}
+
+func (m *MockProvider) STSV2() awsapi.STS {
+	return m.stsV2
+}
+
+func (m *MockProvider) MockSTSV2() *mocksv2.STS {
+	return m.stsV2
+}
+
+func (m *MockProvider) CloudFormationV2() awsapi.CloudFormation {
+	return m.cloudformationV2
+}
+
+func (m *MockProvider) MockCloudFormationV2() *mocksv2.CloudFormation {
+	return m.cloudformationV2
 }
 
 // CloudFormation returns a representation of the CloudFormation API

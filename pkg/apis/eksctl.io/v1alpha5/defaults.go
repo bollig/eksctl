@@ -180,6 +180,9 @@ func setNodeGroupBaseDefaults(ng *NodeGroupBase, meta *ClusterMeta) {
 	if ng.AMIFamily == NodeImageFamilyBottlerocket {
 		setBottlerocketNodeGroupDefaults(ng)
 	}
+	if ng.DisableHyperthreading == nil {
+		ng.DisableHyperthreading = Disabled()
+	}
 }
 
 func setVolumeDefaults(ng *NodeGroupBase, template *LaunchTemplate) {

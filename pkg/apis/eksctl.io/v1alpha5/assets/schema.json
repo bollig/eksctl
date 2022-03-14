@@ -988,6 +988,12 @@
           "x-intellij-html-description": "blocks all IMDS requests from non host networking pods",
           "default": false
         },
+        "disableHyperthreading": {
+          "type": "boolean",
+          "description": "disables hyperthreading on all nodes (i.e., CpuOptions.ThreadsPerCore = 1)",
+          "x-intellij-html-description": "disables hyperthreading on all nodes (i.e., CpuOptions.ThreadsPerCore = 1)",
+          "default": false
+        },
         "ebsOptimized": {
           "type": "boolean",
           "description": "enables [EBS optimization](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html)",
